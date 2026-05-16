@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
 
 export default function SplashScreen({ onStart, translations: t, defaultNickname = "" }) {
+  const inputRef = React.useRef(null);
+
   // Sync window.tempNickname on mount if it's empty
   if (!window.tempNickname && defaultNickname) {
     window.tempNickname = defaultNickname;
@@ -65,6 +67,7 @@ export default function SplashScreen({ onStart, translations: t, defaultNickname
             {t.nickname}
           </label>
           <input
+            ref={inputRef}
             type="text"
             defaultValue={defaultNickname}
             placeholder={t.enter_name}
@@ -72,7 +75,7 @@ export default function SplashScreen({ onStart, translations: t, defaultNickname
             onChange={(e) => {
               const val = e.target.value;
               window.tempNickname = val;
-              onStart(val, true); // Partial update to sync state
+              onStart(val, true);
             }}
           />
         </motion.div>
@@ -83,7 +86,10 @@ export default function SplashScreen({ onStart, translations: t, defaultNickname
           transition={{ delay: 0.7, type: "spring" }}
         >
           <Button
-            onClick={() => onStart(window.tempNickname, false)}
+            onClick={() => {
+              const finalVal = inputRef.current?.value || window.tempNickname || defaultNickname;
+              onStart(finalVal, false);
+            }}
             size="lg"
             className="group relative font-display text-xl h-16 px-12 rounded-full bg-primary hover:bg-primary/90 text-white shadow-[0_0_30px_rgba(255,42,85,0.4)] transition-all hover:scale-105 active:scale-95 w-full md:w-auto"
           >
