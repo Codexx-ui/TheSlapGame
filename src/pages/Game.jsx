@@ -14,6 +14,7 @@ import BackgroundMusic from "../components/game/BackgroundMusic";
 const GAME_DURATION = 15;
 const COMBO_WINDOW = 700;
 
+const CHARACTERS = [
   {
     id: "mitsotakis",
     name: "Μητσοτάκης",
