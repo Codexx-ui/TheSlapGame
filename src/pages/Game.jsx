@@ -11,7 +11,7 @@ import Leaderboard from "../components/game/Leaderboard";
 import SplashScreen from "../components/game/SplashScreen";
 import BackgroundMusic from "../components/game/BackgroundMusic";
 import SettingsModal from "../components/game/SettingsModal";
-import { Settings } from "lucide-react";
+import { Settings as SettingsIcon } from "lucide-react";
 
 const GAME_DURATION = 15;
 const DIFFICULTY_SETTINGS = {
@@ -217,7 +217,7 @@ export default function Game() {
           onClick={() => setIsSettingsOpen(true)}
           className="fixed top-4 right-4 md:top-8 md:right-8 w-14 h-14 md:w-16 md:h-16 rounded-full bg-card/80 backdrop-blur-2xl shadow-[0_0_30px_rgba(0,0,0,0.2)] border-2 border-primary/30 hover:border-primary hover:bg-card transition-all active:scale-90 z-[100]"
         >
-          <Settings className="w-8 h-8 md:w-9 md:h-9 text-primary animate-spin-slow" />
+          <SettingsIcon className="w-8 h-8 md:w-9 md:h-9 text-primary animate-spin-slow" />
         </Button>
       )}
 
