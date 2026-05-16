@@ -219,7 +219,7 @@ export default function Game() {
                 maxTime={GAME_DURATION}
               />
 
-              <SlapTarget onSlap={handleSlap} disabled={false} mode={mode} />
+              <SlapTarget onSlap={handleSlap} disabled={gameState !== "playing"} mode={mode} />
 
               {/* In-game weapon switcher */}
               <div className="flex gap-2 bg-card/80 backdrop-blur rounded-2xl p-2 shadow-inner border border-border">
