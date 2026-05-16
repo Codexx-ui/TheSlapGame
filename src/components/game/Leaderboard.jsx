@@ -11,19 +11,20 @@ export default function Leaderboard({ currentUserEmail }) {
 
   useEffect(() => {
     setLoading(true);
-    // Try HighScore first
     base44.entities.HighScore.list("-score", 20)
       .then((data) => {
         if (data && data.length > 0) {
           setScores(data);
           setLoading(false);
         } else {
-          // Fallback to lowercase highscore
-          return base44.entities.highscore.list("-score", 20);
+          return base44.entities.HighScore.list();
         }
       })
       .then((data) => {
-        if (data) setScores(data);
+        if (data) {
+          const sorted = [...data].sort((a, b) => (b.score || 0) - (a.score || 0));
+          setScores(sorted.slice(0, 20));
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -57,9 +58,14 @@ export default function Leaderboard({ currentUserEmail }) {
 
   return (
     <div className="w-full max-w-sm bg-card rounded-2xl border border-border shadow-lg overflow-hidden">
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
-        <Trophy className="w-4 h-4 text-secondary" />
-        <span className="font-display text-sm text-foreground">GLOBAL HIGH SCORES</span>
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/40">
+        <div className="flex items-center gap-2">
+          <Trophy className="w-4 h-4 text-secondary" />
+          <span className="font-display text-sm text-foreground uppercase">Global High Scores</span>
+        </div>
+        <span className="text-[10px] font-display text-muted-foreground uppercase tracking-widest">
+          {scores.length} Found
+        </span>
       </div>
       <div className="divide-y divide-border">
         {scores.map((s, i) => {
