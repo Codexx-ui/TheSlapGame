@@ -173,24 +173,16 @@ export default function Game() {
   useEffect(() => {
     if (gameState === "over") {
       try {
-        // 1. Get the nickname directly from LocalStorage
+        // 1. Get the nickname
         const savedNickname = localStorage.getItem("slap_nickname");
-        const baseEmail = currentUser?.email || `guest_${Date.now()}`;
-        const email = `${baseEmail.split('@')[0]}_${Math.floor(Math.random() * 10000)}@fapa.com`;
         
-        // 2. Prioritize Nickname -> Gmail Name -> Anonymous
-        let finalName = "";
+        // 2. Generate working email style
+        const uniqueId = `${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+        const email = `guest_${uniqueId}@fapa.com`;
         
-        if (savedNickname && savedNickname !== "[object Object]") {
-          finalName = String(savedNickname);
-        } else if (currentUser) {
-          const rawUserName = currentUser.full_name || currentUser.display_name || currentUser.email.split("@")[0];
-          finalName = typeof rawUserName === 'object' ? (rawUserName.display_name || rawUserName.full_name || "Guest") : String(rawUserName);
-        }
-        
-        if (!finalName || finalName === "[object Object]") {
-          finalName = "Παίκτης";
-        }
+        // 3. Final Name logic
+        let finalName = savedNickname || "Φαπατζής";
+        if (finalName === "[object Object]") finalName = "Φαπατζής";
 
         const dataToSave = {
           player_email: String(email),
