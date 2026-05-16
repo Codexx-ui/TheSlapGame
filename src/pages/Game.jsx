@@ -187,10 +187,11 @@ export default function Game() {
         })
         .catch(err => {
           console.error("Score save failed:", err);
+          const errorMsg = err.message || (typeof err === 'string' ? err : "Άγνωστο σφάλμα");
           toast({
             variant: "destructive",
             title: "Σφάλμα Leaderboard",
-            description: "Δεν μπορέσαμε να σώσουμε το σκορ σου.",
+            description: `Λεπτομέρειες: ${errorMsg}`,
           });
         });
       } else {

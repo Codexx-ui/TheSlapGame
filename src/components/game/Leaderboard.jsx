@@ -10,10 +10,15 @@ export default function Leaderboard({ currentUserEmail }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.HighScore.list("-score", 10).then((data) => {
-      setScores(data);
-      setLoading(false);
-    });
+    base44.entities.HighScore.list("-score", 10)
+      .then((data) => {
+        setScores(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Leaderboard load failed:", err);
+        setLoading(false);
+      });
   }, []);
 
   const getRankIcon = (i) => {
