@@ -10,9 +10,20 @@ export default function Leaderboard({ currentUserEmail }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.HighScore.list("-score", 10)
+    setLoading(true);
+    // Try HighScore first
+    base44.entities.HighScore.list("-score", 20)
       .then((data) => {
-        setScores(data);
+        if (data && data.length > 0) {
+          setScores(data);
+          setLoading(false);
+        } else {
+          // Fallback to lowercase highscore
+          return base44.entities.highscore.list("-score", 20);
+        }
+      })
+      .then((data) => {
+        if (data) setScores(data);
         setLoading(false);
       })
       .catch(err => {

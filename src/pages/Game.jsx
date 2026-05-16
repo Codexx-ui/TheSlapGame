@@ -170,11 +170,13 @@ export default function Game() {
   useEffect(() => {
     if (gameState === "over") {
       // According to RLS rules, user MUST be authenticated and email must match user email
-      if (currentUser) {
-        // Sanitize data to avoid circular references
+        // Sanitize data and ensure name is a clean string
+        const rawName = nickname || currentUser.full_name || currentUser.email.split("@")[0];
+        const cleanName = typeof rawName === 'object' ? (rawName.display_name || rawName.full_name || JSON.stringify(rawName)) : String(rawName);
+
         const dataToSave = {
           player_email: String(currentUser.email),
-          player_name: String(nickname || currentUser.full_name || currentUser.email.split("@")[0]),
+          player_name: cleanName,
           score: Number(score),
           max_combo: Number(maxCombo),
           total_slaps: Number(totalSlaps),
@@ -185,7 +187,7 @@ export default function Game() {
         .then(() => {
           toast({
             title: "Σκορ Αποθηκεύτηκε!",
-            description: `${nickname || currentUser.full_name || "Εσύ"}: ${score} πόντοι`,
+            description: `${cleanName}: ${score} πόντοι`,
           });
         })
         .catch(err => {
