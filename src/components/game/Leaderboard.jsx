@@ -80,10 +80,12 @@ export default function Leaderboard({ currentUserEmail }) {
             >
               <div className="flex items-center justify-center w-5">{getRankIcon(i)}</div>
               <div className="flex-1 min-w-0">
-                <p className={`font-display text-sm truncate ${isMe ? "text-primary" : "text-foreground"}`}>
-                  {s.player_name || s.player_email.split("@")[0]}
-                  {isMe && <span className="text-xs ml-1 text-primary/70">(εσύ)</span>}
-                </p>
+                <span className="font-display text-sm font-medium text-foreground">
+                  {typeof s.player_name === 'object' 
+                    ? (s.player_name?.display_name || s.player_name?.full_name || "Anonymous") 
+                    : (String(s.player_name || s.player_email?.split("@")[0] || "Anonymous"))}
+                  {isMe && <span className="text-[10px] text-primary ml-1">(Εσύ)</span>}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 {s.mode && <span className="text-sm">{MODE_EMOJI[s.mode]}</span>}

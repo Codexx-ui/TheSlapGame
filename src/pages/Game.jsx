@@ -175,12 +175,17 @@ export default function Game() {
       try {
         const savedNickname = localStorage.getItem("slap_nickname") || nickname;
         const email = currentUser?.email || `guest_${Date.now()}_${Math.floor(Math.random() * 1000)}@fapa.com`;
-        const rawName = savedNickname || currentUser?.full_name || currentUser?.display_name || "Ανώνυμος Φαπατζής";
-        const cleanName = typeof rawName === 'object' ? (rawName.display_name || rawName.full_name || "Φαπατζής") : String(rawName);
+        let rawName = savedNickname || (currentUser && (currentUser.full_name || currentUser.display_name)) || "Ανώνυμος Φαπατζής";
+        
+        // Final safety net to ensure rawName is NOT an object
+        if (typeof rawName === 'object' && rawName !== null) {
+          rawName = rawName.display_name || rawName.full_name || "Φαπατζής";
+        }
+        const cleanName = String(rawName);
 
         const dataToSave = {
           player_email: String(email),
-          player_name: String(cleanName),
+          player_name: cleanName,
           score: Number(score || 0),
           max_combo: Number(maxCombo || 0),
         };
