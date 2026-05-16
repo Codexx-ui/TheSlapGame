@@ -165,15 +165,18 @@ export default function Game() {
 
   // Save score when game ends
   useEffect(() => {
-    if (gameState === "over" && currentUser) {
+    if (gameState === "over") {
+      const email = currentUser?.email || `guest_${Date.now()}@slapgame.com`;
+      const name = nickname || currentUser?.full_name || "Ανώνυμος Φαπατζής";
+      
       base44.entities.HighScore.create({
-        player_email: currentUser.email,
-        player_name: nickname || currentUser.full_name || currentUser.email.split("@")[0],
+        player_email: email,
+        player_name: name,
         score,
         max_combo: maxCombo,
         total_slaps: totalSlaps,
         mode,
-      });
+      }).catch(err => console.error("Score save failed:", err));
     }
   }, [gameState]);
 
