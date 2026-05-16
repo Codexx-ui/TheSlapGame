@@ -385,7 +385,7 @@ export default function Game() {
               </div>
 
               <Button
-                onClick={startGame}
+                onClick={() => startGame()}
                 size="lg"
                 className="font-display text-xl h-16 px-12 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-xl shadow-primary/25 transition-all hover:shadow-2xl hover:shadow-primary/30"
               >
