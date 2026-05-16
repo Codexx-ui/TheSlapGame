@@ -64,7 +64,9 @@ export default function SplashScreen({ onStart, translations: t }) {
             type="text"
             placeholder={t.enter_name}
             className="w-full h-14 px-6 rounded-2xl bg-white/5 border border-white/10 text-white font-display text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-white/20"
-            onChange={(e) => (window.tempNickname = e.target.value)}
+            onChange={(e) => {
+              window.tempNickname = String(e.target.value);
+            }}
           />
         </motion.div>
 

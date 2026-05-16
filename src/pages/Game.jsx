@@ -171,14 +171,17 @@ export default function Game() {
     if (gameState === "over") {
       // According to RLS rules, user MUST be authenticated and email must match user email
       if (currentUser) {
-        base44.entities.HighScore.create({
-          player_email: currentUser.email,
-          player_name: nickname || currentUser.full_name || currentUser.email.split("@")[0],
+        // Sanitize data to avoid circular references
+        const dataToSave = {
+          player_email: String(currentUser.email),
+          player_name: String(nickname || currentUser.full_name || currentUser.email.split("@")[0]),
           score: Number(score),
           max_combo: Number(maxCombo),
           total_slaps: Number(totalSlaps),
-          mode,
-        })
+          mode: String(mode),
+        };
+
+        base44.entities.HighScore.create(dataToSave)
         .then(() => {
           toast({
             title: "Σκορ Αποθηκεύτηκε!",
