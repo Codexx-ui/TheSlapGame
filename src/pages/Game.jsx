@@ -17,14 +17,14 @@ const COMBO_WINDOW = 700;
   {
     id: "mitsotakis",
     name: "Μητσοτάκης",
-    image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Kyriakos_Mitsotakis_%28cropped%29.jpg",
+    image: "https://cdn.britannica.com/86/209486-050-C862920A/Kyriakos-Mitsotakis-2019.jpg",
     bg: "https://upload.wikimedia.org/wikipedia/commons/1/14/Griechisches_Parlament.jpg",
     description: "Πύργος Edition"
   },
   {
     id: "adonis",
     name: "Άδωνης",
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/52/Spyridon-Adonis_GEORGIADIS_%28cropped%29.jpg",
+    image: "https://year-of-skills-greece.gr/wp-content/uploads/2024/02/GEORGIADIS20ADONIS-scaled.jpeg",
     bg: "https://upload.wikimedia.org/wikipedia/commons/1/14/Griechisches_Parlament.jpg",
     description: "Υπουργική Φάπα"
   },
