@@ -1,4 +1,4 @@
-**Welcome to your Base44 project** 
+# The Slap Game - ΠΥΡΓΟΣ Edition
 
 **About**
 
