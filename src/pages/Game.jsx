@@ -386,14 +386,14 @@ export default function Game() {
 
               {/* In-game weapon switcher */}
               <div className="flex gap-2 bg-card/80 backdrop-blur rounded-2xl p-2 shadow-inner border border-border">
-                {[["slap","👋"],["punch","👊"],["gun", <img key="gun-img" src="https://img.icons8.com/color/512/gun.png" alt="gun" className="w-8 h-8 object-contain" />]].map(([m, icon]) => (
+                {[["slap","👋"],["punch","👊"],["gun", <img key="gun-img" src="https://img.icons8.com/color/512/gun.png" alt="gun" className="w-6 h-6 md:w-8 md:h-8 object-contain" />]].map(([m, icon]) => (
                   <button
                     key={m}
                     onClick={() => setMode(m)}
                     className={cn(
-                      "py-3 px-5 rounded-xl font-display text-2xl transition-all",
+                      "py-2 px-4 md:py-3 md:px-5 rounded-xl font-display text-xl md:text-2xl transition-all",
                       mode === m
-                        ? "bg-primary text-primary-foreground shadow-md scale-110"
+                        ? "bg-primary text-primary-foreground shadow-md scale-105 md:scale-110"
                         : "text-muted-foreground hover:text-foreground"
                     )}
                   >
