@@ -39,10 +39,13 @@ const TRANSLATIONS = {
     max_combo: "Max Combo",
     game_over: "ΤΕΛΟΣ ΠΑΙΧΝΙΔΙΟΥ",
     restart: "Ξαναπαίξε",
-    instructions: {
-      slap: "👋 Χτύπα τον στο πρόσωπο!",
-      punch: "👊 Χτύπα τον στο πρόσωπο!",
-      gun: "🔫 Ρίξ' του μερικές!"
+      instructions: {
+        slap: "👋 Χτύπα τον στο πρόσωπο!",
+        punch: "👊 Χτύπα τον στο πρόσωπο!",
+        gun: "🔫 Ρίξ' του μερικές!"
+      },
+      nickname: "Όνομα Παίκτη",
+      enter_name: "Γράψε το όνομά σου..."
     }
   },
   en: {
@@ -63,10 +66,13 @@ const TRANSLATIONS = {
     max_combo: "Max Combo",
     game_over: "GAME OVER",
     restart: "Play Again",
-    instructions: {
-      slap: "👋 Slap him in the face!",
-      punch: "👊 Punch him!",
-      gun: "🔫 Shoot him!"
+      instructions: {
+        slap: "👋 Slap him in the face!",
+        punch: "👊 Punch him!",
+        gun: "🔫 Shoot him!"
+      },
+      nickname: "Player Name",
+      enter_name: "Enter your nickname..."
     }
   }
 };
@@ -108,6 +114,7 @@ export default function Game() {
   const [language, setLanguage] = useState("el");
   const [isHighQuality, setIsHighQuality] = useState(true);
   const [gameId, setGameId] = useState(0);
+  const [nickname, setNickname] = useState("");
 
   const t = TRANSLATIONS[language];
   const comboWindow = DIFFICULTY_SETTINGS[difficulty].window;
@@ -125,7 +132,8 @@ export default function Game() {
     base44.auth.me().then(setCurrentUser).catch(() => {});
   }, []);
 
-  const startGame = useCallback(() => {
+  const startGame = useCallback((customName) => {
+    if (customName) setNickname(customName);
     setScore(0);
     setCombo(0);
     setMaxCombo(0);
@@ -162,7 +170,7 @@ export default function Game() {
     if (gameState === "over" && currentUser) {
       base44.entities.HighScore.create({
         player_email: currentUser.email,
-        player_name: currentUser.full_name || currentUser.email.split("@")[0],
+        player_name: nickname || currentUser.full_name || currentUser.email.split("@")[0],
         score,
         max_combo: maxCombo,
         total_slaps: totalSlaps,
@@ -251,7 +259,13 @@ export default function Game() {
       <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-md">
         <AnimatePresence>
           {gameState === "intro" && (
-            <SplashScreen onStart={() => setGameState("idle")} translations={t} />
+            <SplashScreen 
+              onStart={(name) => {
+                if (name) setNickname(name);
+                setGameState("idle");
+              }} 
+              translations={t} 
+            />
           )}
         </AnimatePresence>
 

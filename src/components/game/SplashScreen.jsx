@@ -52,14 +52,31 @@ export default function SplashScreen({ onStart, translations: t }) {
         </motion.p>
 
         <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="max-w-xs mx-auto w-full space-y-2"
+        >
+          <label className="text-xs font-display text-primary uppercase tracking-widest block text-left ml-2">
+            {t.nickname}
+          </label>
+          <input
+            type="text"
+            placeholder={t.enter_name}
+            className="w-full h-14 px-6 rounded-2xl bg-white/5 border border-white/10 text-white font-display text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-white/20"
+            onChange={(e) => (window.tempNickname = e.target.value)}
+          />
+        </motion.div>
+
+        <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.6, type: "spring" }}
+          transition={{ delay: 0.7, type: "spring" }}
         >
           <Button
-            onClick={onStart}
+            onClick={() => onStart(window.tempNickname)}
             size="lg"
-            className="group relative font-display text-2xl h-20 px-16 rounded-full bg-primary hover:bg-primary/90 text-white shadow-[0_0_30px_rgba(255,42,85,0.4)] transition-all hover:scale-105 active:scale-95"
+            className="group relative font-display text-2xl h-20 px-16 rounded-full bg-primary hover:bg-primary/90 text-white shadow-[0_0_30px_rgba(255,42,85,0.4)] transition-all hover:scale-105 active:scale-95 w-full md:w-auto"
           >
             <div className="absolute inset-0 rounded-full bg-white/20 animate-ping group-hover:animate-none opacity-0 group-hover:opacity-10" />
             <Play className="w-8 h-8 mr-3 fill-current" />
