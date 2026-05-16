@@ -144,7 +144,10 @@ export default function Game() {
       setTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(timerRef.current);
-            setGameState("over");
+            // Delay showing the game over screen for 1 second
+            setTimeout(() => {
+              setGameState("over");
+            }, 1000);
             return 0;
           }
         return prev - 1;
