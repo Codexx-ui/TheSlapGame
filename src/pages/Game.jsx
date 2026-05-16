@@ -181,8 +181,6 @@ export default function Game() {
             player_name: String(cleanName),
             score: Number(score || 0),
             max_combo: Number(maxCombo || 0),
-            total_slaps: Number(totalSlaps || 0),
-            mode: String(mode || "slap"),
           };
 
           base44.entities.HighScore.create(dataToSave)
