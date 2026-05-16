@@ -107,6 +107,7 @@ export default function Game() {
   const [difficulty, setDifficulty] = useState("medium");
   const [language, setLanguage] = useState("el");
   const [isHighQuality, setIsHighQuality] = useState(true);
+  const [gameId, setGameId] = useState(0);
 
   const t = TRANSLATIONS[language];
   const comboWindow = DIFFICULTY_SETTINGS[difficulty].window;
@@ -131,6 +132,7 @@ export default function Game() {
     setTotalSlaps(0);
     setTimeLeft(GAME_DURATION);
     setGameState("playing");
+    setGameId(id => id + 1);
     lastSlapTime.current = 0;
   }, []);
 
@@ -142,13 +144,7 @@ export default function Game() {
       setTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(timerRef.current);
-            setGameState("finishing");
-            
-            // Auto-end finishing state after 3 seconds if no slap is made
-            setTimeout(() => {
-              setGameState(curr => curr === "finishing" ? "over" : curr);
-            }, 3000);
-            
+            setGameState("over");
             return 0;
           }
         return prev - 1;
@@ -173,11 +169,7 @@ export default function Game() {
   }, [gameState]);
 
   const handleSlap = useCallback(() => {
-    if (gameState !== "playing" && gameState !== "finishing") return;
-
-    if (gameState === "finishing") {
-      setGameState("over");
-    }
+    if (gameState !== "playing") return;
     
     const now = Date.now();
     const timeSinceLastSlap = now - lastSlapTime.current;
@@ -373,9 +365,9 @@ export default function Game() {
               />
 
               <SlapTarget
-                key={gameState === "playing" || gameState === "finishing" ? "active" : "idle"}
+                key={`${gameId}-${character.id}`}
                 onSlap={handleSlap}
-                disabled={gameState !== "playing" && gameState !== "finishing"}
+                disabled={gameState !== "playing"}
                 mode={mode}
                 targetImage={character.image}
                 combo={combo}
@@ -436,7 +428,7 @@ export default function Game() {
 
         {/* Finish Him Overlay - Positioned above target, appears at <= 3s */}
         <AnimatePresence>
-          {(gameState === "finishing" || (gameState === "playing" && timeLeft <= 3)) && (
+          {gameState === "playing" && timeLeft <= 3 && timeLeft > 0 && (
             <motion.div
               initial={{ scale: 0.5, opacity: 0, y: 50 }}
               animate={{ 
