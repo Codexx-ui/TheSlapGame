@@ -96,7 +96,7 @@ const CHARACTERS = [
 ];
 
 export default function Game() {
-  const [gameState, setGameState] = useState("intro"); // intro | idle | playing | over
+  const [gameState, setGameState] = useState("intro"); // intro | idle | playing | finishing | over
   const [character, setCharacter] = useState(CHARACTERS[2]);
   const [mode, setMode] = useState("slap"); // slap | punch | gun
   const [isNightMode, setIsNightMode] = useState(false);
@@ -140,11 +140,17 @@ export default function Game() {
 
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timerRef.current);
-          setGameState("over");
-          return 0;
-        }
+          if (prev <= 1) {
+            clearInterval(timerRef.current);
+            setGameState("finishing");
+            
+            // Auto-end finishing state after 2.5 seconds if no slap is made
+            setTimeout(() => {
+              setGameState(curr => curr === "finishing" ? "over" : curr);
+            }, 2500);
+            
+            return 0;
+          }
         return prev - 1;
       });
     }, 1000);
@@ -167,6 +173,12 @@ export default function Game() {
   }, [gameState]);
 
   const handleSlap = useCallback(() => {
+    if (gameState !== "playing" && gameState !== "finishing") return;
+
+    if (gameState === "finishing") {
+      setGameState("over");
+    }
+    
     const now = Date.now();
     const timeSinceLastSlap = now - lastSlapTime.current;
 
@@ -185,7 +197,7 @@ export default function Game() {
     }
 
     lastSlapTime.current = now;
-  }, [comboWindow]);
+  }, [comboWindow, gameState]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 overflow-hidden relative">
@@ -355,9 +367,9 @@ export default function Game() {
               />
 
               <SlapTarget
-                key={gameState === "playing" ? "playing" : "idle"}
+                key={gameState === "playing" || gameState === "finishing" ? "active" : "idle"}
                 onSlap={handleSlap}
-                disabled={gameState !== "playing"}
+                disabled={gameState !== "playing" && gameState !== "finishing"}
                 mode={mode}
                 targetImage={character.image}
                 combo={combo}
@@ -415,6 +427,33 @@ export default function Game() {
           onToggleQuality={setIsHighQuality}
           translations={t}
         />
+
+        {/* Finish Him Overlay */}
+        <AnimatePresence>
+          {gameState === "finishing" && (
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ 
+                scale: [1, 1.1, 1],
+                opacity: 1,
+                rotate: [-2, 2, -2]
+              }}
+              exit={{ scale: 2, opacity: 0 }}
+              transition={{ 
+                duration: 0.2,
+                rotate: { repeat: Infinity, duration: 0.1 }
+              }}
+              className="fixed inset-0 z-[150] flex flex-col items-center justify-center pointer-events-none bg-red-950/20 backdrop-blur-[2px]"
+            >
+              <h2 className="font-display text-7xl md:text-9xl text-primary drop-shadow-[0_0_30px_rgba(255,42,85,0.8)] italic uppercase tracking-tighter animate-pulse">
+                FINISH HIM
+              </h2>
+              <p className="font-display text-2xl text-white mt-4 tracking-widest animate-bounce">
+                {language === "el" ? "ΤΕΛΕΙΩΣΕ ΤΟΝ!" : "LAND THE FINAL BLOW!"}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Game Over */}
         <AnimatePresence>
