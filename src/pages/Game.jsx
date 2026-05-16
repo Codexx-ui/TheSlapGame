@@ -113,7 +113,7 @@ export default function Game() {
   const [language, setLanguage] = useState("el");
   const [isHighQuality, setIsHighQuality] = useState(true);
   const [gameId, setGameId] = useState(0);
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState(localStorage.getItem("slap_nickname") || "");
 
   const t = TRANSLATIONS[language];
   const comboWindow = DIFFICULTY_SETTINGS[difficulty].window;
@@ -132,7 +132,10 @@ export default function Game() {
   }, []);
 
   const startGame = useCallback((customName) => {
-    if (customName) setNickname(customName);
+    if (customName) {
+      setNickname(customName);
+      localStorage.setItem("slap_nickname", customName);
+    }
     setScore(0);
     setCombo(0);
     setMaxCombo(0);
@@ -170,8 +173,9 @@ export default function Game() {
   useEffect(() => {
     if (gameState === "over") {
       try {
+        const savedNickname = localStorage.getItem("slap_nickname") || nickname;
         const email = currentUser?.email || `guest_${Date.now()}_${Math.floor(Math.random() * 1000)}@fapa.com`;
-        const rawName = nickname || currentUser?.full_name || currentUser?.display_name || "Ανώνυμος Φαπατζής";
+        const rawName = savedNickname || currentUser?.full_name || currentUser?.display_name || "Ανώνυμος Φαπατζής";
         const cleanName = typeof rawName === 'object' ? (rawName.display_name || rawName.full_name || "Φαπατζής") : String(rawName);
 
         const dataToSave = {
@@ -279,10 +283,14 @@ export default function Game() {
           {gameState === "intro" && (
             <SplashScreen 
               onStart={(name, isPartial) => {
-                if (name) setNickname(String(name));
+                if (name) {
+                  setNickname(String(name));
+                  localStorage.setItem("slap_nickname", String(name));
+                }
                 if (!isPartial) setGameState("idle");
               }} 
               translations={t} 
+              defaultNickname={nickname}
             />
           )}
         </AnimatePresence>

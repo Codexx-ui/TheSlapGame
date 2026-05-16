@@ -3,7 +3,11 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
 
-export default function SplashScreen({ onStart, translations: t }) {
+export default function SplashScreen({ onStart, translations: t, defaultNickname = "" }) {
+  // Sync window.tempNickname on mount if it's empty
+  if (!window.tempNickname && defaultNickname) {
+    window.tempNickname = defaultNickname;
+  }
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -62,6 +66,7 @@ export default function SplashScreen({ onStart, translations: t }) {
           </label>
           <input
             type="text"
+            defaultValue={defaultNickname}
             placeholder={t.enter_name}
             className="w-full h-11 px-5 rounded-xl bg-white/5 border border-white/10 text-white font-display text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-white/20"
             onChange={(e) => {
