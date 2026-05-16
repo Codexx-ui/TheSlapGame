@@ -13,6 +13,7 @@ import BackgroundMusic from "../components/game/BackgroundMusic";
 import SettingsModal from "../components/game/SettingsModal";
 import { Settings as SettingsIcon } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { saveToLeaderboard } from "@/lib/githubLeaderboard";
 
 const GAME_DURATION = 15;
 const DIFFICULTY_SETTINGS = {
@@ -155,24 +156,29 @@ export default function Game() {
 
   const { toast } = useToast();
 
-  const saveScore = useCallback(() => {
-    const uniqueId = `${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-    const email = `guest_${uniqueId}@fapa.com`;
+  const saveScore = useCallback(async () => {
     const finalName = nicknameRef.current || localStorage.getItem("slap_nickname") || "Ανώνυμος";
+    const currentScore = scoreRef.current || 0;
+    const currentMaxCombo = maxComboRef.current || 0;
 
-    base44.entities.HighScore.create({
-      player_email: String(email),
+    const ok = await saveToLeaderboard({
       player_name: String(finalName),
-      score: Number(scoreRef.current || 0),
-      max_combo: Number(maxComboRef.current || 0),
-    })
-      .then(() => {
-        toast({
-          title: "Σκορ Αποθηκεύτηκε!",
-          description: `${finalName}: ${scoreRef.current} πόντοι`,
-        });
-      })
-      .catch(err => console.error("Score save failed:", err));
+      score: Number(currentScore),
+      max_combo: Number(currentMaxCombo),
+    });
+
+    if (ok) {
+      toast({
+        title: "Σκορ Αποθηκεύτηκε!",
+        description: `${finalName}: ${currentScore} πόντοι`,
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Αποτυχία αποθήκευσης",
+        description: "Δεν ήταν δυνατή η αποθήκευση στο GitHub.",
+      });
+    }
   }, [toast]);
 
   // Timer countdown
