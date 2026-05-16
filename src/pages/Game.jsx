@@ -303,7 +303,10 @@ export default function Game() {
                 setGameState("idle");
               }} 
             translations={t} 
-            defaultNickname={localStorage.getItem("slap_nickname") || ""}
+            defaultNickname={(() => {
+              const saved = localStorage.getItem("slap_nickname");
+              return (saved && saved !== "[object Object]") ? saved : "";
+            })()}
           />
         )}
         </AnimatePresence>
