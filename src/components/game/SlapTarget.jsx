@@ -63,11 +63,14 @@ function FPSWeapon({ mode, fireKey }) {
         <img
           src={GUN_IMAGE}
           alt="gun"
-          className="w-72 h-auto drop-shadow-2xl"
+          className="w-40 md:w-72 h-auto drop-shadow-2xl"
           style={{ transform: "scaleX(-1) translateY(20px)" }}
         />
       ) : (
-        <div style={{ fontSize: "7rem", lineHeight: 1, transform: flip, filter: "drop-shadow(0 -4px 16px rgba(0,0,0,0.4))" }}>
+        <div 
+          className="text-[4rem] md:text-[7rem]"
+          style={{ lineHeight: 1, transform: flip, filter: "drop-shadow(0 -4px 16px rgba(0,0,0,0.4))" }}
+        >
           {emoji}
         </div>
       )}
