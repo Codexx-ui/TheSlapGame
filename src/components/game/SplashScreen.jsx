@@ -26,16 +26,16 @@ export default function SplashScreen({ onStart, translations: t }) {
         />
       </div>
 
-      <div className="relative z-10 max-w-lg space-y-8">
+      <div className="relative z-10 max-w-lg space-y-4 md:space-y-6">
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <h1 className="font-display text-6xl md:text-8xl text-white tracking-tighter mb-2 drop-shadow-[0_0_20px_rgba(255,42,85,0.5)]">
+          <h1 className="font-display text-5xl md:text-8xl text-white tracking-tighter mb-1 drop-shadow-[0_0_20px_rgba(255,42,85,0.5)]">
             ΦΑΠΑ <span className="text-primary">ΞΑΠΛΑ</span>
           </h1>
-          <p className="font-display text-primary text-xl md:text-2xl tracking-[0.2em] font-bold">
+          <p className="font-display text-primary text-lg md:text-2xl tracking-[0.2em] font-bold">
             ✨ ΠΥΡΓΟΣ EDITION ✨
           </p>
         </motion.div>
@@ -44,26 +44,26 @@ export default function SplashScreen({ onStart, translations: t }) {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="font-body text-muted-foreground text-lg leading-relaxed"
+          className="font-body text-muted-foreground text-base md:text-lg leading-relaxed max-w-md mx-auto"
         >
           {t.language === "en" 
-            ? "Play now! Show your reflexes and give the strongest slap to Corruption. Don't let him take a breath!"
-            : "Παίξε τώρα! Δείξε τα αντανακλαστικά σου και ρίξε την πιο δυνατή φάπα στην Διαφθορά. Μην τον αφήσεις να πάρει ανάσα!"}
+            ? "Play now! Show your reflexes and give the strongest slap to Corruption."
+            : "Παίξε τώρα! Δείξε τα αντανακλαστικά σου και ρίξε την πιο δυνατή φάπα στην Διαφθορά."}
         </motion.p>
 
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="max-w-xs mx-auto w-full space-y-2"
+          className="max-w-[240px] mx-auto w-full space-y-1"
         >
-          <label className="text-xs font-display text-primary uppercase tracking-widest block text-left ml-2">
+          <label className="text-[10px] font-display text-primary uppercase tracking-widest block text-left ml-2 opacity-70">
             {t.nickname}
           </label>
           <input
             type="text"
             placeholder={t.enter_name}
-            className="w-full h-14 px-6 rounded-2xl bg-white/5 border border-white/10 text-white font-display text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-white/20"
+            className="w-full h-11 px-5 rounded-xl bg-white/5 border border-white/10 text-white font-display text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-white/20"
             onChange={(e) => {
               window.tempNickname = String(e.target.value);
             }}
@@ -78,10 +78,10 @@ export default function SplashScreen({ onStart, translations: t }) {
           <Button
             onClick={() => onStart(window.tempNickname)}
             size="lg"
-            className="group relative font-display text-2xl h-20 px-16 rounded-full bg-primary hover:bg-primary/90 text-white shadow-[0_0_30px_rgba(255,42,85,0.4)] transition-all hover:scale-105 active:scale-95 w-full md:w-auto"
+            className="group relative font-display text-xl h-16 px-12 rounded-full bg-primary hover:bg-primary/90 text-white shadow-[0_0_30px_rgba(255,42,85,0.4)] transition-all hover:scale-105 active:scale-95 w-full md:w-auto"
           >
             <div className="absolute inset-0 rounded-full bg-white/20 animate-ping group-hover:animate-none opacity-0 group-hover:opacity-10" />
-            <Play className="w-8 h-8 mr-3 fill-current" />
+            <Play className="w-6 h-6 mr-2 fill-current" />
             {t.continue}
           </Button>
         </motion.div>
