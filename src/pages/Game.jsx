@@ -12,6 +12,7 @@ import SplashScreen from "../components/game/SplashScreen";
 import BackgroundMusic from "../components/game/BackgroundMusic";
 import SettingsModal from "../components/game/SettingsModal";
 import { Settings as SettingsIcon } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const GAME_DURATION = 15;
 const DIFFICULTY_SETTINGS = {
@@ -163,6 +164,8 @@ export default function Game() {
     return () => clearInterval(timerRef.current);
   }, [gameState]);
 
+  const { toast } = useToast();
+
   // Save score when game ends
   useEffect(() => {
     if (gameState === "over") {
@@ -172,11 +175,25 @@ export default function Game() {
       base44.entities.HighScore.create({
         player_email: email,
         player_name: name,
-        score,
-        max_combo: maxCombo,
-        total_slaps: totalSlaps,
+        score: Number(score),
+        max_combo: Number(maxCombo),
+        total_slaps: Number(totalSlaps),
         mode,
-      }).catch(err => console.error("Score save failed:", err));
+      })
+      .then(() => {
+        toast({
+          title: "Σκορ Αποθηκεύτηκε!",
+          description: `${name}: ${score} πόντοι`,
+        });
+      })
+      .catch(err => {
+        console.error("Score save failed:", err);
+        toast({
+          variant: "destructive",
+          title: "Αποτυχία Αποθήκευσης",
+          description: "Δεν μπορέσαμε να σώσουμε το σκορ σου.",
+        });
+      });
     }
   }, [gameState]);
 
