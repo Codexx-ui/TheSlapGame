@@ -172,13 +172,11 @@ export default function Game() {
       const email = currentUser?.email || `guest_${Date.now()}@slapgame.com`;
       const name = nickname || currentUser?.full_name || "Ανώνυμος Φαπατζής";
       
-      base44.entities.HighScore.create({
+      // Simplified save to troubleshoot
+      base44.entities.highscore.create({
         player_email: email,
         player_name: name,
         score: Number(score),
-        max_combo: Number(maxCombo),
-        total_slaps: Number(totalSlaps),
-        mode,
       })
       .then(() => {
         toast({
@@ -188,10 +186,24 @@ export default function Game() {
       })
       .catch(err => {
         console.error("Score save failed:", err);
-        toast({
-          variant: "destructive",
-          title: "Αποτυχία Αποθήκευσης",
-          description: "Δεν μπορέσαμε να σώσουμε το σκορ σου.",
+        // Try again with uppercase just in case
+        base44.entities.HighScore.create({
+          player_email: email,
+          player_name: name,
+          score: Number(score),
+        })
+        .then(() => {
+           toast({
+            title: "Σκορ Αποθηκεύτηκε!",
+            description: `${name}: ${score} πόντοι`,
+          });
+        })
+        .catch(err2 => {
+          toast({
+            variant: "destructive",
+            title: "Αποτυχία Αποθήκευσης",
+            description: "Σφάλμα: " + (err2.message || "Πρόβλημα σύνδεσης"),
+          });
         });
       });
     }
