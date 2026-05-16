@@ -14,27 +14,26 @@ import BackgroundMusic from "../components/game/BackgroundMusic";
 const GAME_DURATION = 15;
 const COMBO_WINDOW = 700;
 
-const CHARACTERS = [
-  {
-    id: "default",
-    name: "Λέρα",
-    image: "https://media.base44.com/images/public/6a02d2983989447500838a5e/15c2a163e_tar.jpeg",
-    bg: "https://images.unsplash.com/photo-1540206395-68808572332f?q=80&w=1000&auto=format&fit=crop",
-    description: "Ο κλασικός στόχος"
-  },
   {
     id: "mitsotakis",
     name: "Μητσοτάκης",
-    image: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Kyriakos_Mitsotakis_2023.jpg",
-    bg: "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hellenic_Parliament_Athens.jpg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Kyriakos_Mitsotakis_%28cropped%29.jpg",
+    bg: "https://upload.wikimedia.org/wikipedia/commons/1/14/Griechisches_Parlament.jpg",
     description: "Πύργος Edition"
   },
   {
     id: "adonis",
     name: "Άδωνης",
-    image: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Adonis_Georgiadis_2023.jpg",
-    bg: "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hellenic_Parliament_Athens.jpg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/5/52/Spyridon-Adonis_GEORGIADIS_%28cropped%29.jpg",
+    bg: "https://upload.wikimedia.org/wikipedia/commons/1/14/Griechisches_Parlament.jpg",
     description: "Υπουργική Φάπα"
+  },
+  {
+    id: "default",
+    name: "Λέρα",
+    image: "https://media.base44.com/images/public/6a02d2983989447500838a5e/15c2a163e_tar.jpeg",
+    bg: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/86/cd/fe/atlantica-beach-resort.jpg",
+    description: "Ο κλασικός στόχος"
   }
 ];
 
@@ -140,11 +139,11 @@ export default function Game() {
 
       <BackgroundMusic autoStart={gameState !== "intro"} />
 
-      <div className="fixed inset-0 pointer-events-none opacity-30">
+      <div className="fixed inset-0 pointer-events-none opacity-40">
         <img
           src={character.bg}
           alt="bg"
-          className="w-full h-full object-cover grayscale-[0.5]"
+          className="w-full h-full object-cover grayscale-[0.2]"
         />
       </div>
 
