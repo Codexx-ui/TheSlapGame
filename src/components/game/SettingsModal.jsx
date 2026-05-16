@@ -185,7 +185,7 @@ export default function SettingsModal({
               {t.apply}
             </Button>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   );
