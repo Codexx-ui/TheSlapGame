@@ -37,6 +37,12 @@
   },
   {
     "player_name": "[object Object]",
+    "score": 1693,
+    "max_combo": 32,
+    "timestamp": "2026-05-20T21:19:04.372Z"
+  },
+  {
+    "player_name": "[object Object]",
     "score": 1653,
     "max_combo": 33,
     "timestamp": "2026-05-20T20:30:28.218Z"
